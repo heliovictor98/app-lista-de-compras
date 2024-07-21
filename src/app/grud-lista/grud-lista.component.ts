@@ -5,19 +5,25 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
-
-export interface PeriodicElement {
+export interface listaCompras {
   descricao: string;
   valor: string;
   quantidade: string;
   total: string;
-  acao: string
+  acao: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {descricao: 'Suco', quantidade: '2',valor: 'R$3,00',  total: 'R$6,00', acao: 'icones'},
+const ELEMENT_DATA: listaCompras[] = [
+  { descricao: 'Suco', quantidade: '2', valor: '3.00', total: '6.00', acao: 'icones' },
+  { descricao: 'Pão', quantidade: '5', valor: '1.50', total: '7.50', acao: 'icones' },
+  { descricao: 'Leite', quantidade: '3', valor: '2.00', total: '6.00', acao: 'icones' },
+  { descricao: 'Café', quantidade: '1', valor: '10.00', total: '10.00', acao: 'icones' },
 ];
+
+
 @Component({
   selector: 'app-grud-lista',
   standalone: true,
@@ -27,7 +33,9 @@ const ELEMENT_DATA: PeriodicElement[] = [
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
+    FormsModule,
+    MatIconModule
   ],
   templateUrl: './grud-lista.component.html',
   styleUrl: './grud-lista.component.scss'
@@ -35,4 +43,38 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class GrudListaComponent {
   displayedColumns: string[] = ['descricao', 'quantidade','valor', 'total','acao'];
   dataSource = ELEMENT_DATA;
+
+  produto: string = '';
+  quantidade: number = 0;
+  valor: string = '';
+
+  adicionarItem() {
+    const quantidadeNum = this.quantidade;
+    const valorNum = parseFloat(this.valor.replace('R$', '').replace(',', '.'));
+
+    if (!this.produto || isNaN(quantidadeNum) || isNaN(valorNum) || quantidadeNum <= 0 || valorNum <= 0) {
+      alert('Por favor, insira valores válidos para produto, quantidade e valor.');
+      return;
+    }
+
+    const novoItem: listaCompras = {
+      descricao: this.produto,
+      quantidade: this.quantidade.toString(),
+      valor: `R$${valorNum.toFixed(2).replace('.', ',')}`,
+      total: `R$${(quantidadeNum * valorNum).toFixed(2).replace('.', ',')}`,
+      acao: 'icones'
+    };
+
+    this.dataSource = [...this.dataSource, novoItem];
+    this.resetForm();
+  }
+
+  resetForm() {
+    this.produto = '';
+    this.quantidade = 0;
+    this.valor = '';
+  }
+  removerItem(element: listaCompras) {
+    this.dataSource = this.dataSource.filter(item => item !== element);
+  }
 }
