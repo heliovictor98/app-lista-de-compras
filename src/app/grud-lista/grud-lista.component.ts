@@ -17,10 +17,6 @@ export interface listaCompras {
 }
 
 const ELEMENT_DATA: listaCompras[] = [
-  { descricao: 'Suco', quantidade: '2', valor: '3.00', total: '6.00', acao: 'icones' },
-  { descricao: 'Pão', quantidade: '5', valor: '1.50', total: '7.50', acao: 'icones' },
-  { descricao: 'Leite', quantidade: '3', valor: '2.00', total: '6.00', acao: 'icones' },
-  { descricao: 'Café', quantidade: '1', valor: '10.00', total: '10.00', acao: 'icones' },
 ];
 
 
