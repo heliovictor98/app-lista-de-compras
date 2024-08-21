@@ -7,6 +7,18 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import {MatDialogModule} from '@angular/material/dialog';
+import {ChangeDetectionStrategy, inject} from '@angular/core';
+//import {MatButtonModule} from '@angular/material/button';
+import {
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogTitle,
+} from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
+import { DialogexcluirComponent } from '../dialogexcluir/dialogexcluir.component';
 
 export interface listaCompras {
   descricao: string;
@@ -17,6 +29,15 @@ export interface listaCompras {
 }
 
 const ELEMENT_DATA: listaCompras[] = [
+   {descricao: 'Suco', quantidade: '2',valor: 'R$3,00',  total: 'R$6,00', acao: 'icones'},
+  // {descricao: 'Suco', quantidade: '2',valor: 'R$3,00',  total: 'R$6,00', acao: 'icones'},
+  // {descricao: 'Suco', quantidade: '2',valor: 'R$3,00',  total: 'R$6,00', acao: 'icones'},
+  // {descricao: 'Suco', quantidade: '2',valor: 'R$3,00',  total: 'R$6,00', acao: 'icones'},
+  // {descricao: 'Suco', quantidade: '2',valor: 'R$3,00',  total: 'R$6,00', acao: 'icones'},
+  // {descricao: 'Suco', quantidade: '2',valor: 'R$3,00',  total: 'R$6,00', acao: 'icones'},
+  // {descricao: 'Suco', quantidade: '2',valor: 'R$3,00',  total: 'R$6,00', acao: 'icones'},
+  // {descricao: 'Suco', quantidade: '2',valor: 'R$3,00',  total: 'R$6,00', acao: 'icones'},
+  // {descricao: 'Suco', quantidade: '2',valor: 'R$3,00',  total: 'R$6,00', acao: 'icones'},
 ];
 
 
@@ -31,7 +52,8 @@ const ELEMENT_DATA: listaCompras[] = [
     MatButtonModule,
     MatTableModule,
     FormsModule,
-    MatIconModule
+    MatIconModule,
+    MatDialogModule
   ],
   templateUrl: './grud-lista.component.html',
   styleUrl: './grud-lista.component.scss'
@@ -39,19 +61,33 @@ const ELEMENT_DATA: listaCompras[] = [
 export class GrudListaComponent {
   displayedColumns: string[] = ['descricao', 'quantidade','valor', 'total','acao'];
   dataSource = ELEMENT_DATA;
+  readonly dialog = inject(MatDialog);
 
   produto: string = '';
   quantidade: number = 0;
   valor: string = '';
 
+  openDialog() {
+    const dialogRef = this.dialog.open(DialogComponent);
+    console.log(dialogRef);
+    return;
+  }
+
+  openDialogexcluir() {
+    const dialogRef = this.dialog.open(DialogexcluirComponent);
+    console.log(dialogRef);
+    return;
+  }
   adicionarItem() {
     const quantidadeNum = this.quantidade;
     const valorNum = parseFloat(this.valor.replace('R$', '').replace(',', '.'));
 
     if (!this.produto || isNaN(quantidadeNum) || isNaN(valorNum) || quantidadeNum <= 0 || valorNum <= 0) {
-      alert('Por favor, insira valores válidos para produto, quantidade e valor.');
+      this.openDialog();
+      //alert('Por favor, insira valores válidos para produto, quantidade e valor.');
       return;
     }
+
 
     const novoItem: listaCompras = {
       descricao: this.produto,
@@ -71,6 +107,7 @@ export class GrudListaComponent {
     this.valor = '';
   }
   removerItem(element: listaCompras) {
+    this.openDialogexcluir();
     this.dataSource = this.dataSource.filter(item => item !== element);
   }
 }
