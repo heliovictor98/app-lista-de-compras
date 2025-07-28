@@ -1,0 +1,48 @@
+@use '@angular/material' as mat;
+
+html, body { 
+  height: 100%; 
+}
+
+body { 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+
+.container-form {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 20px;
+  flex-wrap: wrap;
+}
+
+.format-input {
+  min-width: 200px;
+}
+
+.btn {
+  margin: 20px;
+}
+
+.btn-adicionar {
+  min-width: 120px;
+}
+
+.example-container {
+  margin: 20px;
+  border-radius: 8px;
+}
+
+.mat-mdc-table {
+  width: 100%;
+}
+
+.mat-mdc-header-cell {
+  font-weight: 600;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}

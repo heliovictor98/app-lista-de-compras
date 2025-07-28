@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(taskkill:*)",
+      "Bash(npm start)",
+      "Bash(mkdir:*)",
+      "Bash(ng version)",
+      "Bash(npx:*)",
+      "Bash(npm install:*)",
+      "Bash(ng build)"
+    ],
+    "deny": []
+  }
+}

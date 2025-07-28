@@ -1,0 +1,142 @@
+<div class="shopping-list-container">
+  <!-- Formulário de Adição -->
+  <mat-card class="form-card">
+    <mat-card-header>
+      <mat-card-title>Adicionar Item</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="product-field">
+          <mat-label>Produto</mat-label>
+          <input 
+            matInput 
+            [(ngModel)]="formData().descricao" 
+            name="descricao"
+            placeholder="Ex: Arroz, Feijão..."
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="quantity-field">
+          <mat-label>Quantidade</mat-label>
+          <input 
+            matInput 
+            type="number" 
+            [(ngModel)]="formData().quantidade" 
+            name="quantidade"
+            min="1"
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="value-field">
+          <mat-label>Valor (R$)</mat-label>
+          <input 
+            matInput 
+            [(ngModel)]="formData().valor" 
+            name="valor"
+            placeholder="0,00"
+          >
+        </mat-form-field>
+
+        <button 
+          mat-raised-button 
+          color="primary" 
+          (click)="addItem()"
+          class="add-button"
+        >
+          <mat-icon>add</mat-icon>
+          Adicionar
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Resumo -->
+  <mat-card class="summary-card" *ngIf="itemCount() > 0">
+    <mat-card-content>
+      <div class="summary-content">
+        <div class="summary-item">
+          <span class="summary-label">Total de itens:</span>
+          <span class="summary-value">{{ itemCount() }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Valor total:</span>
+          <span class="summary-value total-value">{{ totalValue() | currency:'BRL':'symbol':'1.2-2' }}</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Tabela de Itens -->
+  <mat-card class="table-card">
+    <mat-card-header>
+      <mat-card-title>Lista de Compras</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="table-container" *ngIf="items().length > 0; else emptyState">
+        <table mat-table [dataSource]="items()" class="shopping-table">
+          <!-- Coluna Descrição -->
+          <ng-container matColumnDef="descricao">
+            <th mat-header-cell *matHeaderCellDef>Produto</th>
+            <td mat-cell *matCellDef="let item">{{ item.descricao }}</td>
+          </ng-container>
+
+          <!-- Coluna Quantidade -->
+          <ng-container matColumnDef="quantidade">
+            <th mat-header-cell *matHeaderCellDef>Quantidade</th>
+            <td mat-cell *matCellDef="let item">{{ item.quantidade }}</td>
+          </ng-container>
+
+          <!-- Coluna Valor Unitário -->
+          <ng-container matColumnDef="valor">
+            <th mat-header-cell *matHeaderCellDef>Valor Unitário</th>
+            <td mat-cell *matCellDef="let item">{{ item.valor | currency:'BRL':'symbol':'1.2-2' }}</td>
+          </ng-container>
+
+          <!-- Coluna Total -->
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Total</th>
+            <td mat-cell *matCellDef="let item" class="total-cell">
+              {{ item.total | currency:'BRL':'symbol':'1.2-2' }}
+            </td>
+          </ng-container>
+
+          <!-- Coluna Ações -->
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let item">
+              <div class="action-buttons">
+                <button 
+                  mat-icon-button 
+                  color="primary" 
+                  (click)="editItem(item)"
+                  matTooltip="Editar item"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button 
+                  mat-icon-button 
+                  color="warn" 
+                  (click)="removeItem(item)"
+                  matTooltip="Excluir item"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+
+      <ng-template #emptyState>
+        <div class="empty-state">
+          <mat-icon class="empty-icon">shopping_cart</mat-icon>
+          <h3>Sua lista está vazia</h3>
+          <p>Adicione produtos para começar sua lista de compras</p>
+        </div>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+</div>
